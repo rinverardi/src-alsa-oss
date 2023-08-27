@@ -431,7 +431,7 @@ int lib_oss_mixer_ioctl(int fd, unsigned long cmd, ...)
 				break;
 			}
 			if (snd_mixer_selem_has_playback_volume(elem)) {
-				err = snd_mixer_selem_set_playback_volume(elem, SND_MIXER_SCHN_FRONT_LEFT, lvol);
+				err = snd_mixer_selem_set_playback_volume(elem, SND_MIXER_SCHN_FRONT_LEFT, lvol * 655);
 				if (err < 0) 
 					break;
 				if (snd_mixer_selem_is_playback_mono(elem)) {
@@ -440,7 +440,7 @@ int lib_oss_mixer_ioctl(int fd, unsigned long cmd, ...)
 					if (err < 0) 
 						break;
 				} else {
-					err = snd_mixer_selem_set_playback_volume(elem, SND_MIXER_SCHN_FRONT_RIGHT, rvol);
+					err = snd_mixer_selem_set_playback_volume(elem, SND_MIXER_SCHN_FRONT_RIGHT, rvol * 655);
 					if (err < 0) 
 						break;
 					if (snd_mixer_selem_has_playback_switch(elem)) {
@@ -491,6 +491,7 @@ int lib_oss_mixer_ioctl(int fd, unsigned long cmd, ...)
 				}
 				if (sw) {
 					err = snd_mixer_selem_get_playback_volume(elem, SND_MIXER_SCHN_FRONT_LEFT, &lvol);
+					lvol /= 655;
 					if (err < 0) 
 						break;
 				} else
@@ -507,6 +508,7 @@ int lib_oss_mixer_ioctl(int fd, unsigned long cmd, ...)
 					}
 					if (sw) {
 						err = snd_mixer_selem_get_playback_volume(elem, SND_MIXER_SCHN_FRONT_RIGHT, &rvol);
+						rvol /= 655;
 						if (err < 0) 
 							break;
 					} else
